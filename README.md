@@ -17,6 +17,7 @@ Postfix's virtual alias domains.
 	* `StackName`: the name of the AWS CloudFormation stack to create during deployment (default: "SESForwarder")
 	* `S3BucketEmail`: the name the S3 bucket that you will configure SES to store the raw emails in for processing.
 	* `S3PrefixEmail`: the prefix within that S3 bucket for storing the email (default: "ses/forwarding/")
+	* `S3PathBackup`: an optional S3 path for storing a dated backup copy of config.js upon deployment
 4. Copy `src/process-email/config.example.js` to `src/process-email/config.js` and configure your domain aliases in it.
 5. Run `./package.sh` to package and deploy the function to AWS.
 

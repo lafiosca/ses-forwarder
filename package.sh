@@ -9,6 +9,11 @@ cd "${BASH_SOURCE%/*}"
 # Include config variables
 source ./config.sh
 
+if [[ $S3PathBackup ]]
+then
+	aws s3 cp src/process-email/config.js ${S3PathBackup}/config.$(date -Iseconds).js
+fi
+
 # Build Lambda package
 cd src/process-email
 npm install
@@ -29,3 +34,4 @@ aws cloudformation deploy \
 	--parameter-overrides \
 	S3BucketEmail="${S3BucketEmail}" \
 	S3PrefixEmail="${S3PrefixEmail}"
+
