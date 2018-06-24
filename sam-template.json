@@ -1,0 +1,54 @@
+{
+	"AWSTemplateFormatVersion": "2010-09-09",
+	"Transform": "AWS::Serverless-2016-10-31",
+	"Description": "SES Forwarder",
+	"Parameters": {
+		"S3BucketEmail": {
+			"Type": "String",
+			"Description": "S3 bucket for receiving email"
+		},
+		"S3PrefixEmail": {
+			"Type": "String",
+			"Description": "S3 prefix for receiving email"
+		}
+	},
+	"Resources": {
+		"ProcessEmailFunction": {
+			"Type": "AWS::Serverless::Function",
+			"Properties": {
+				"FunctionName": { "Fn::Sub": "${AWS::StackName}-ProcessEmail" },
+				"Description": "Process email function",
+				"CodeUri": "src/process-email/",
+				"Handler": "index.handler",
+				"Runtime": "nodejs8.10",
+				"MemorySize": 1024,
+				"Timeout": 30,
+				"Tracing": "Active",
+				"Policies": [
+					"AWSXrayWriteOnlyAccess",
+					{ "S3ReadPolicy": {
+						"BucketName": { "Ref": "S3BucketEmail" }
+					}},
+					{
+						"Version": "2012-10-17",
+						"Statement": [
+							{
+								"Effect": "Allow",
+								"Action": ["ses:SendRawEmail"],
+								"Resource": [{
+									"Fn::Sub": "arn:aws:ses:${AWS::Region}:${AWS::AccountId}:identity/*"
+								}]
+							}
+						]
+					}
+				],
+				"Environment": {
+					"Variables": {
+						"S3BucketEmail": { "Ref": "S3BucketEmail" },
+						"S3PrefixEmail": { "Ref": "S3PrefixEmail" }
+					}
+				}
+			}
+		}
+	}
+}

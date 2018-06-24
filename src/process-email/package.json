@@ -1,0 +1,34 @@
+{
+	"name": "process-email",
+	"version": "1.0.0",
+	"description": "Email processor",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/lafiosca/ses-forwarder.git"
+	},
+	"keywords": [
+		"aws",
+		"ses",
+		"email"
+	],
+	"author": "Joe Lafiosca <joe@lafiosca.com>",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/lafiosca/ses-forwarder/issues"
+	},
+	"homepage": "https://github.com/lafiosca/ses-forwarder#readme",
+	"dependencies": {
+		"aws-sdk": "^2.263.1",
+		"lodash": "^4.17.10",
+		"nice-lambda": "^1.0.0"
+	},
+	"devDependencies": {
+		"eslint": "^5.0.0",
+		"eslint-config-airbnb-base": "^13.0.0",
+		"eslint-plugin-import": "^2.12.0"
+	}
+}

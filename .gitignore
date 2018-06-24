@@ -1,0 +1,4 @@
+config.sh
+sam-output.yml
+node_modules/
+src/process-email/config.js

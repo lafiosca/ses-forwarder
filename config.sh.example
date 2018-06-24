@@ -1,0 +1,10 @@
+#!/bin/bash
+
+StackName=SESForwarder
+
+S3BucketArtifacts=your-artifact-bucket
+S3PrefixArtifacts=cloudformation/ses-forwarder
+
+S3BucketEmail=your-transient-bucket
+S3PrefixEmail=ses/forwarding/
+
