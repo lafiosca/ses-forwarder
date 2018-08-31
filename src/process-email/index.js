@@ -12,6 +12,7 @@ const emailBucket = process.env.S3BucketEmail;
 const emailPrefix = process.env.S3PrefixEmail;
 
 const parseRecord = (event) => {
+	console.log('Parsing SES record');
 	const record = _.get(event, 'Records[0]');
 
 	if (!record) {
@@ -44,10 +45,29 @@ const parseRecord = (event) => {
 		throw new Error('Record did not contain recipients');
 	}
 
+	/* record.ses.receipt also contains these potentially useful fields:
+		"spamVerdict": {
+			"status": "FAIL"
+		},
+		"virusVerdict": {
+			"status": "PASS"
+		},
+		"spfVerdict": {
+			"status": "PROCESSING_FAILED"
+		},
+		"dkimVerdict": {
+			"status": "GRAY"
+		},
+		"dmarcVerdict": {
+			"status": "PROCESSING_FAILED"
+		},
+	*/
+
 	return [mail, recipients];
 };
 
 const processAliases = (origRecipients) => {
+	console.log(`Processing aliases for original recipients: ${JSON.stringify(origRecipients, null, 2)}`);
 	let origRecipient = null;
 	let recipients = origRecipients.map((recipient) => {
 		for (let i = 0; i < config.aliases.length; i += 1) {
@@ -157,6 +177,7 @@ exports.handler = lambda(async (event) => {
 	const [recipients, origRecipient] = processAliases(origRecipients);
 
 	if (_.isEmpty(recipients)) {
+		console.log('No recipients after alias processing, let it bounce');
 		return { disposition: 'CONTINUE' };
 	}
 
