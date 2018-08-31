@@ -156,7 +156,7 @@ exports.handler = lambda(async (event) => {
 	const [mail, origRecipients] = parseRecord(event);
 	const [recipients, origRecipient] = processAliases(origRecipients);
 
-	if (!recipients) {
+	if (_.isEmpty(recipients)) {
 		return { disposition: 'CONTINUE' };
 	}
 
